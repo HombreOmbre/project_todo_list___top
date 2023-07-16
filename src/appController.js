@@ -140,7 +140,7 @@ export default class appController {
 
     static getTask(projectType, projectIndex, taskIndex) {
         const projectTasks = this.getProjectTasks(projectType, projectIndex);
-        console.log(projectTasks[taskIndex]);
+
         return projectTasks[taskIndex];
     }
 
