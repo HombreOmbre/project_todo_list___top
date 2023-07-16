@@ -11,7 +11,114 @@
 </head>
 <body>
     <div id="content">
-
+        <div class="app_display">
+            <div id="menu">
+                <div class="box_logo">
+                    <h1 class="logo">todo.do</h1>
+                </div>
+                <div class="basic_projects">
+                    <ul class="projects_container_list" data-type="basic">
+                    <!--    
+                        <li>
+                            <button type="button" class="btn basic_project" data-index="0" data-type="basicProject">Daily Tasks
+                            </button>
+                        </li>
+                    
+                        <li>
+                            <button type="button" class="btn basic_project" data-index="1" data-type="basicProject">Grocery List
+                            </button>
+                        </li>
+                    -->    
+                    </ul>
+                </div>
+                <div class="projects_container">
+                    <div class="projects_container_box">
+                        <h2 class="projects_container_title">Projects</h2>
+                        <button class="add_project btn" type="button">+</button>
+                    </div>
+                    <ul class="projects_container_list" data-type="user">
+                    <!--
+                        <li>
+                            <button type="button" class="btn user_project" data-index="0" data-type="userProject">test 1
+                            </button>
+                        </li>
+                    
+                        <li>
+                            <button type="button" class="btn user_project" data-index="1" data-type="userProject">test 2
+                            </button>
+                        </li>
+                    -->
+                    </ul>
+                </div>
+            </div>
+            <div class="tasks">
+                <div class="task_title" data-index="" data-type="">
+                    <div class="title_container">
+                        <button class="project_title btn">...</button>
+                        <button type="button" class="remove_project_btn btn">X</button>
+                    </div>
+                    <div class="project_notes_container">
+                        <div class="container_title_settings">
+                            <h2>Notes:</h2>
+                            <button type="button" class="project_settings btn">
+                                <img src="./img/settings_icon.svg" alt="Settings icon" class="settings">
+                            </button>
+                        </div>    
+                        <div class="project_notes"></div>
+                    </div>
+                </div>
+                <div class="tasks_container">
+                    <ul class="tasks_container_list">
+                    </ul>
+                    <button class="new_task btn" type="button">+ Add New Task</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer_container">
+            <p>Copyright © 2023 by HombreOmbre 
+                <a href="https://github.com/HombreOmbre"> 
+                    <img class="icon" src="./img/github-mark-white.svg">
+                </a>
+            </p>
+        </div>
+        <div class="modal_for_project">
+            <form class="form_for_project">
+                <h2>Create New Project</h2>
+                <label class="project_name" for="newProjectName">Project name: 
+                    <input type="text" name="newProjectName" id="newProjectName" required>
+                </label>
+                <label class="project_notes" for="newProjectNotes">Project notes:
+                    <textarea name="newProjectNotes" id="newProjectNotes"></textarea>
+                </label>
+                <button type="submit" class="new_project btn">Add Project</button>
+                <button type="submit" class="update_project_modal btn">Update Project</button>
+                <button type="button" class="btn close_project_modal">X</button>
+            </form>
+        </div>
+        <div class="modal_for_task">
+            <form class="form_for_task">
+                <h2>Create Task</h2>
+                <label class="new_task_name" for="newTaskName">Project name: 
+                    <input type="text" name="newTaskName" id="newTaskName" required>
+                </label>
+                <label for="priorityTask">Choose task priority:
+                    <select name="priorityTask" id="priorityTask">
+                        <option value="1">High</option>
+                        <option value="2">Medium</option>
+                        <option value="3">Low</option>
+                    </select>
+                </label>
+                <label class="task_notes" for="newTaskNotes">Project notes:
+                    <textarea name="newTaskNotes" id="newTaskNotes"></textarea>
+                </label>
+                <label for="taskDueDate">Set due date for task:
+                    <input type="date" id="taskDueDate" name="taskDueDate">
+                </label>
+                <button type="submit" class="new_task_modal btn">Add Task</button>
+                <button type="submit" class="update_task_modal btn">Update Task</button>
+                <button type="button" class="btn close_task_modal">X</button>
+            </form>
+        </div>
     </div>
     <script src="main.js"></script>
 </body>
