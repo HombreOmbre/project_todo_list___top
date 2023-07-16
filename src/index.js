@@ -1,1 +1,3 @@
-console.log('Hello World')
+import UIController from './UIController';
+
+UIController.renderBlankPage();
