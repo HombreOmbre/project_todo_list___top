@@ -1,4 +1,5 @@
 import appController from './appController';
+import storageController from './storageController';
 
 export default class UIController {
     // Render projects
@@ -126,14 +127,14 @@ export default class UIController {
     }
 
     static changeTaskStatus(e) {
-        const getShownProjectDetails = document.querySelector('.task_title');
+        const projectDetails = document.querySelector('.task_title').dataset;
         const checkboxBtns = document.querySelectorAll('.checkbox');
         const closeBtns = document.querySelectorAll('.close_task_btn');
         const taskIsDone = document.querySelectorAll('.done');
         const indexOfTask = e.target.dataset.index;
         appController.changeStatusOfTask(
-            getShownProjectDetails.dataset.type,
-            getShownProjectDetails.dataset.index,
+            projectDetails.type,
+            projectDetails.index,
             indexOfTask
         );
 
@@ -142,36 +143,50 @@ export default class UIController {
         taskIsDone[indexOfTask].classList.toggle('task_done');
 
         UIController.showRemoveButtonInUserProjects();
+
+        storageController.manageDataInLocalStorage(
+            projectDetails.type,
+            appController.getContainerWithProjects(projectDetails.type)
+        );
     }
 
     static removeTask(e) {
         const taskIndex = e.target.dataset.index;
-        const getShownProjectDetails = document.querySelector('.task_title');
+        const projectDetails = document.querySelector('.task_title').dataset;
 
         appController.removeTaskFromProject(
-            getShownProjectDetails.dataset.type,
-            getShownProjectDetails.dataset.index,
+            projectDetails.type,
+            projectDetails.index,
             taskIndex
         );
 
         UIController.renderProjectTasks(
             appController.getProjectTasks(
-                getShownProjectDetails.dataset.type,
-                getShownProjectDetails.dataset.index
+                projectDetails.type,
+                projectDetails.index
             )
         );
         UIController.addEventListenersToTasks();
 
         UIController.showRemoveButtonInUserProjects();
+
+        storageController.manageDataInLocalStorage(
+            projectDetails.type,
+            appController.getContainerWithProjects(projectDetails.type)
+        );
     }
 
     static removeProjectFromList() {
-        const projectIndex =
-            document.querySelector('.task_title').dataset.index;
+        const projectDetails = document.querySelector('.task_title').dataset;
 
-        appController.removeProject(projectIndex);
+        appController.removeProject(projectDetails.index);
 
-        UIController.renderBlankPage();
+        storageController.manageDataInLocalStorage(
+            projectDetails.type,
+            appController.getContainerWithProjects(projectDetails.type)
+        );
+
+        UIController.renderMainProject();
     }
 
     // Add new task
@@ -255,22 +270,25 @@ export default class UIController {
         UIController.hideModalForNewTask();
 
         UIController.showRemoveButtonInUserProjects();
+
+        storageController.manageDataInLocalStorage(
+            projectDetails.type,
+            appController.getContainerWithProjects(projectDetails.type)
+        );
     }
 
     static addNewTask(e) {
         e.preventDefault();
 
-        const projectType = document.querySelector('.task_title').dataset.type;
-        const projectIndex =
-            document.querySelector('.task_title').dataset.index;
+        const projectDetails = document.querySelector('.task_title').dataset;
         const newTaskName = document.querySelector('#newTaskName').value;
         const newTaskPriority = document.querySelector('#priorityTask').value;
         const newTaskNotes = document.querySelector('#newTaskNotes').value;
         const newDueDate = document.querySelector('#taskDueDate').value;
 
         appController.addNewTaskToProject(
-            projectType,
-            projectIndex,
+            projectDetails.type,
+            projectDetails.index,
             newTaskName,
             newTaskPriority,
             newTaskNotes,
@@ -278,7 +296,10 @@ export default class UIController {
         );
 
         UIController.renderProjectTasks(
-            appController.getProjectTasks(projectType, projectIndex)
+            appController.getProjectTasks(
+                projectDetails.type,
+                projectDetails.index
+            )
         );
 
         UIController.clearInputsForNewTask();
@@ -288,6 +309,11 @@ export default class UIController {
         UIController.hideModalForNewTask();
 
         UIController.showRemoveButtonInUserProjects();
+
+        storageController.manageDataInLocalStorage(
+            projectDetails.type,
+            appController.getContainerWithProjects(projectDetails.type)
+        );
     }
 
     static clearInputsForNewTask() {
@@ -367,6 +393,11 @@ export default class UIController {
         );
         UIController.addEventListenersToPage();
         UIController.hideModalForNewProject();
+
+        storageController.manageDataInLocalStorage(
+            'userProject',
+            appController.getContainerWithProjects('userProject')
+        );
     }
 
     static clearInputsForNewProject() {
@@ -435,6 +466,11 @@ export default class UIController {
         UIController.addEventListenersToPage();
 
         UIController.setActiveClass('', projectDetails.index);
+
+        storageController.manageDataInLocalStorage(
+            projectDetails.type,
+            appController.getContainerWithProjects(projectDetails.type)
+        );
     }
 
     static fillProjectModalWithProjectDetails() {
@@ -629,8 +665,8 @@ export default class UIController {
         );
     }
 
-    // First page render
-    static renderBlankPage() {
+    // Render Main project
+    static renderMainProject() {
         UIController.renderProjectList(
             appController.getContainerWithProjects('basicProject'),
             'basicProject'
@@ -643,5 +679,13 @@ export default class UIController {
         UIController.showProjectDetails();
 
         this.addEventListenersToPage();
+    }
+
+    static firstPageRender() {
+        storageController.getDataFromLocalStorage('basicProject');
+
+        storageController.getDataFromLocalStorage('userProject');
+
+        UIController.renderMainProject();
     }
 }
