@@ -1,3 +1,3 @@
 import UIController from './UIController';
 
-UIController.renderBlankPage();
+UIController.firstPageRender();
