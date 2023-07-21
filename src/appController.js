@@ -12,6 +12,7 @@ export default class appController {
 
     static getContainerWithProjects(projectType) {
         let containerForProjects;
+
         if (projectType === 'basicProject') {
             containerForProjects = this.containerForBasicProjects;
         } else if (projectType === 'userProject') {
@@ -21,33 +22,22 @@ export default class appController {
     }
 
     static getProject(projectType, projectIndex) {
-        let projectToShow;
-        if (projectType === 'basicProject') {
-            projectToShow = this.containerForBasicProjects;
-        } else if (projectType === 'userProject') {
-            projectToShow = this.containerForUserProjects;
-        }
+        const containerWithProjects =
+            this.getContainerWithProjects(projectType);
 
-        return projectToShow[projectIndex];
+        return containerWithProjects[projectIndex];
     }
 
     static getProjectName(projectType, projectIndex) {
-        const projectName = this.getProject(projectType, projectIndex);
+        const project = this.getProject(projectType, projectIndex);
 
-        return projectName.getName();
+        return project.getName();
     }
 
     static getProjectTasks(projectType, projectIndex) {
-        let projectTasks;
-        if (projectType === 'basicProject') {
-            projectTasks =
-                this.containerForBasicProjects[projectIndex].getTasksList();
-        } else if (projectType === 'userProject') {
-            projectTasks =
-                this.containerForUserProjects[projectIndex].getTasksList();
-        }
+        const project = this.getProject(projectType, projectIndex);
 
-        return projectTasks;
+        return project.getTasksList();
     }
 
     static getProjectNotes(projectType, projectIndex) {
@@ -57,7 +47,10 @@ export default class appController {
     }
 
     static addNewUserProject(newProjectName, newProjectNotes) {
-        this.containerForUserProjects.push(
+        const containerWithProjects =
+            this.getContainerWithProjects('userProject');
+
+        containerWithProjects.push(
             new UserProject(newProjectName, newProjectNotes)
         );
     }
@@ -69,18 +62,6 @@ export default class appController {
         );
 
         return projectListTasks.every((task) => task.checkIsDone() === true);
-    }
-
-    static searchProjectToAddTask(projectType, projectIndex) {
-        let containerWithProject;
-        if (projectType === 'basicProject') {
-            containerWithProject = this.containerForBasicProjects[projectIndex];
-        }
-        if (projectType === 'userProject') {
-            containerWithProject = this.containerForUserProjects[projectIndex];
-        }
-
-        return containerWithProject;
     }
 
     static changeStatusOfTask(projectType, projectIndex, taskIndex) {
@@ -98,25 +79,26 @@ export default class appController {
         taskName,
         taskPriority,
         taskDueDate,
-        taskNotes
+        taskNotes,
+        taskIsDone
     ) {
-        const projectToAddTask = appController.searchProjectToAddTask(
-            projectType,
-            projectIndex
-        );
+        const project = appController.getProject(projectType, projectIndex);
 
-        projectToAddTask.addTasksToList(
-            new BasicTask(taskName, taskPriority, taskDueDate, taskNotes)
+        project.addTasksToList(
+            new BasicTask(
+                taskName,
+                taskPriority,
+                taskDueDate,
+                taskNotes,
+                taskIsDone
+            )
         );
     }
 
     static removeTaskFromProject(projectType, projectIndex, taskIndex) {
-        const projectToRemoveTask = this.searchProjectToAddTask(
-            projectType,
-            projectIndex
-        );
+        const project = this.getProject(projectType, projectIndex);
 
-        projectToRemoveTask.removeTaskFromList(taskIndex);
+        project.removeTaskFromList(taskIndex);
     }
 
     static removeProject(projectIndex) {
@@ -132,10 +114,10 @@ export default class appController {
         newProjectName,
         newProjectNotes
     ) {
-        const projectToUpdate = this.getProject(projectType, projectIndex);
+        const project = this.getProject(projectType, projectIndex);
 
-        projectToUpdate.setNewName(newProjectName);
-        projectToUpdate.setNewNotes(newProjectNotes);
+        project.setNewName(newProjectName);
+        project.setNewNotes(newProjectNotes);
     }
 
     static getTask(projectType, projectIndex, taskIndex) {
