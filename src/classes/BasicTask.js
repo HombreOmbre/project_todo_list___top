@@ -1,7 +1,7 @@
 import BasicClassPattern from './BasicClassPattern';
 
 export default class BasicTask extends BasicClassPattern {
-    constructor(name, priority, notes, dueDate) {
+    constructor(name, priority, notes, dueDate, isDone) {
         super(name);
         this.priority = priority;
         this.dueDate =
@@ -12,7 +12,7 @@ export default class BasicTask extends BasicClassPattern {
                     : new Date().getMonth()
             }-${new Date().getDate()}`;
         this.notes = notes;
-        this.isDone = false;
+        this.isDone = isDone || false;
     }
 
     setNewPriority(newPriority) {
