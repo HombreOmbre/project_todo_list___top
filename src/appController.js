@@ -1,3 +1,4 @@
+import differenceInCalendarDays from 'date-fns/differenceInCalendarDays';
 import BasicProject from './classes/BasicProject';
 import BasicTask from './classes/BasicTask';
 import UserProject from './classes/UserProject';
@@ -73,6 +74,33 @@ export default class appController {
         getProjectTasksList[taskIndex].changeIsDone();
     }
 
+    static getTask(projectType, projectIndex, taskIndex) {
+        const projectTasks = this.getProjectTasks(projectType, projectIndex);
+
+        return projectTasks[taskIndex];
+    }
+
+    static changePriorityOfOverdueTasks(projectType, projectIndex) {
+        const project = this.getProject(projectType, projectIndex);
+        const projectTasks = this.getProjectTasks(projectType, projectIndex);
+
+        for (let i = 0; i < projectTasks.length; i++) {
+            const priority = +projectTasks[i].getPriorityInDigit();
+
+            if (
+                differenceInCalendarDays(
+                    new Date(),
+                    new Date(projectTasks[i].getChangePriorityDate())
+                ) > 3
+            ) {
+                projectTasks[i].setNewPriority((priority - 1).toString());
+                projectTasks[i].setNewChangePriorityDate(new Date());
+            }
+        }
+
+        project.sortTasksByPriority();
+    }
+
     static addNewTaskToProject(
         projectType,
         projectIndex,
@@ -80,7 +108,8 @@ export default class appController {
         taskPriority,
         taskDueDate,
         taskNotes,
-        taskIsDone
+        taskIsDone,
+        taskChangePriorityDate
     ) {
         const project = appController.getProject(projectType, projectIndex);
 
@@ -90,7 +119,8 @@ export default class appController {
                 taskPriority,
                 taskDueDate,
                 taskNotes,
-                taskIsDone
+                taskIsDone,
+                taskChangePriorityDate
             )
         );
     }
@@ -118,12 +148,6 @@ export default class appController {
 
         project.setNewName(newProjectName);
         project.setNewNotes(newProjectNotes);
-    }
-
-    static getTask(projectType, projectIndex, taskIndex) {
-        const projectTasks = this.getProjectTasks(projectType, projectIndex);
-
-        return projectTasks[taskIndex];
     }
 
     static updateTaskDetails(
