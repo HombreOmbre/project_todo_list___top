@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/.bin/eslint .",
     "lint:fix": "./node_modules/.bin/eslint . --fix",
-    "build": "webpack"
+    "build": "webpack",
+    "deploy":"git subtree push --prefix dist origin gh-pages"
   },
   "keywords": [],
   "author": "",
