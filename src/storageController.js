@@ -9,9 +9,10 @@ export default class storageController {
                     index,
                     project.tasksList[i].name,
                     project.tasksList[i].priority,
-                    project.tasksList[i].dueDate,
                     project.tasksList[i].notes,
-                    project.tasksList[i].isDone
+                    project.tasksList[i].dueDate,
+                    project.tasksList[i].isDone,
+                    project.tasksList[i].changePriorityDate
                 );
             }
         });
