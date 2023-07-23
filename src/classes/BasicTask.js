@@ -1,18 +1,14 @@
+import { format } from 'date-fns';
 import BasicClassPattern from './BasicClassPattern';
 
 export default class BasicTask extends BasicClassPattern {
-    constructor(name, priority, notes, dueDate, isDone) {
+    constructor(name, priority, notes, dueDate, isDone, changePriorityDate) {
         super(name);
         this.priority = priority;
-        this.dueDate =
-            dueDate ||
-            `${new Date().getFullYear()}-${
-                +new Date().getMonth() < 10
-                    ? `0${new Date().getMonth()}`
-                    : new Date().getMonth()
-            }-${new Date().getDate()}`;
+        this.dueDate = new Date(dueDate) || new Date();
         this.notes = notes;
         this.isDone = isDone || false;
+        this.changePriorityDate = changePriorityDate || this.dueDate;
     }
 
     setNewPriority(newPriority) {
@@ -20,11 +16,10 @@ export default class BasicTask extends BasicClassPattern {
     }
 
     changePriorityValueToStr() {
-        if (+this.priority === 1) {
+        if (this.priority === '1') {
             return 'high';
         }
-
-        if (+this.priority === 2) {
+        if (this.priority === '2') {
             return 'medium';
         }
 
@@ -48,11 +43,11 @@ export default class BasicTask extends BasicClassPattern {
     }
 
     setDueDate(newDueDate) {
-        this.dueDate = newDueDate;
+        this.dueDate = newDueDate || this.dueDate;
     }
 
     getDueDate() {
-        return this.dueDate;
+        return format(new Date(this.dueDate), 'dd/MM/yyyy');
     }
 
     changeIsDone() {
@@ -61,5 +56,13 @@ export default class BasicTask extends BasicClassPattern {
 
     checkIsDone() {
         return this.isDone;
+    }
+
+    getChangePriorityDate() {
+        return this.changePriorityDate;
+    }
+
+    setNewChangePriorityDate(newChangePriorityDate) {
+        this.changePriorityDate = newChangePriorityDate;
     }
 }
