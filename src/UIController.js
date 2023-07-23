@@ -132,6 +132,7 @@ export default class UIController {
         const closeBtns = document.querySelectorAll('.close_task_btn');
         const taskIsDone = document.querySelectorAll('.done');
         const indexOfTask = e.target.dataset.index;
+
         appController.changeStatusOfTask(
             projectDetails.type,
             projectDetails.index,
@@ -141,6 +142,8 @@ export default class UIController {
         checkboxBtns[indexOfTask].classList.toggle('checked');
         closeBtns[indexOfTask].classList.toggle('show');
         taskIsDone[indexOfTask].classList.toggle('task_done');
+
+        UIController.addEventListenersToTasks();
 
         UIController.showRemoveButtonInUserProjects();
 
@@ -239,7 +242,7 @@ export default class UIController {
         const newTaskName = document.querySelector('#newTaskName').value;
         const newTaskPriority = document.querySelector('#priorityTask').value;
         const newTaskNotes = document.querySelector('#newTaskNotes').value;
-        const newDueDate = document.querySelector('#taskDueDate').value;
+        const newDueDate = document.querySelector('#taskDueDate').valueAsDate;
 
         appController.updateTaskDetails(
             projectDetails.type,
@@ -249,6 +252,11 @@ export default class UIController {
             newTaskPriority,
             newTaskNotes,
             newDueDate
+        );
+
+        appController.changePriorityOfOverdueTasks(
+            projectDetails.type,
+            projectDetails.index
         );
 
         UIController.renderProjectTasks(
@@ -284,7 +292,7 @@ export default class UIController {
         const newTaskName = document.querySelector('#newTaskName').value;
         const newTaskPriority = document.querySelector('#priorityTask').value;
         const newTaskNotes = document.querySelector('#newTaskNotes').value;
-        const newDueDate = document.querySelector('#taskDueDate').value;
+        const newDueDate = document.querySelector('#taskDueDate').valueAsDate;
 
         appController.addNewTaskToProject(
             projectDetails.type,
@@ -293,6 +301,11 @@ export default class UIController {
             newTaskPriority,
             newTaskNotes,
             newDueDate
+        );
+
+        appController.changePriorityOfOverdueTasks(
+            projectDetails.type,
+            projectDetails.index
         );
 
         UIController.renderProjectTasks(
@@ -616,6 +629,8 @@ export default class UIController {
                 appController.getProjectNotes(projectType, projectIndex)
             );
         }
+
+        appController.changePriorityOfOverdueTasks(projectType, projectIndex);
 
         UIController.renderProjectTasks(
             appController.getProjectTasks(projectType, projectIndex)
