@@ -5,7 +5,7 @@ export default class BasicTask extends BasicClassPattern {
     constructor(name, priority, notes, dueDate, isDone, changePriorityDate) {
         super(name);
         this.priority = priority;
-        this.dueDate = new Date(dueDate) || new Date();
+        this.dueDate = dueDate || new Date();
         this.notes = notes;
         this.isDone = isDone || false;
         this.changePriorityDate = changePriorityDate || this.dueDate;
