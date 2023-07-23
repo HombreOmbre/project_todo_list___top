@@ -15,6 +15,7 @@ module.exports = {
         'no-use-before-define': ['warn', { functions: false, classes: false }],
         'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
         'no-param-reassign': ['error', { props: false }],
+        'import/no-extraneous-dependencies': 'off',
         'prettier/prettier': [
             'error',
             {
