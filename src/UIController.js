@@ -603,6 +603,16 @@ export default class UIController {
         projectNotesContainer.textContent = projectNotes;
     }
 
+    static hideProjectNotes() {
+        const projectNotesContainer = document.querySelector(
+            '.project_notes_container'
+        );
+        const projectNotes = document.querySelector('.project_notes');
+
+        projectNotes.textContent = '';
+        projectNotesContainer.className = 'project_notes_container';
+    }
+
     static showProjectDetails(e) {
         let projectType;
         let projectIndex;
@@ -623,6 +633,10 @@ export default class UIController {
             projectIndex,
             projectType
         );
+
+        if (projectType === 'basicProject') {
+            UIController.hideProjectNotes();
+        }
 
         if (projectType === 'userProject') {
             UIController.setProjectNotes(
